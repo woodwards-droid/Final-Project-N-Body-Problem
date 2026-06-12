@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <cstdlib>
 #include "raylib.h"
 
 struct Body {
@@ -103,10 +104,13 @@ int main() {
     const double softening = 2.0;
     const double dt = 0.01;
 
-    const char* display = getenv("DISPLAY");
+#if defined(__linux__)
+    // No X11/Wayland display means we can't open a window
+    const char* display = std::getenv("DISPLAY");
     if (display == nullptr || display[0] == '\0') {
         return runHeadless();
     }
+#endif
 
     InitWindow(screenWidth, screenHeight, "N-Body Gravity");
     if (!IsWindowReady()) {

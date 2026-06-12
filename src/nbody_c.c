@@ -84,8 +84,13 @@ static void draw_force_arrow(const Body *bb, float scale) {
 int main(void) {
     const int screenW = 800, screenH = 600;
 
+#if defined(__linux__)
+    // No X11/Wayland display means we can't open a window
     const char *display = getenv("DISPLAY");
     int headless = (display == NULL || display[0] == '\0');
+#else
+    int headless = 0;
+#endif
 
     // simple three-body system
     int n = 3;
